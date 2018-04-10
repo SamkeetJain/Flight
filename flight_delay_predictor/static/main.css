@@ -1,0 +1,9 @@
+cardbody{
+    display:  flex;
+    flex-direction: column;
+    justify-content:  space-around;
+}
+
+cardbtn{
+    align-self:end;
+}
