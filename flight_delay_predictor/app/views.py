@@ -2,6 +2,7 @@ from django import forms
 from django.shortcuts import render
 from django.views import View
 from .Flight import predict
+import pandas as pd
 
 
 class Homepage(View):
@@ -48,6 +49,17 @@ class Homepage(View):
 
 
 class MyForm(forms.Form):
+    dataFrame = pd.read_csv('static/data.csv', header=None)
+    columns = ['year', 'month', 'carrier', 'carrier_name', 'airport', 'airport_name', 'arr_flights', 'arr_del15',
+               'carrier_ct', 'weather_ct', 'nas_ct', 'security_ct', 'late_aircraft_ct', 'arr_cancelled', 'arr_diverted',
+               'arr_delay', 'carrier_delay', 'weather_delay', 'nas_delay', 'security_delay', 'late_aircraft_delay',
+               'temp']
+    dataFrame.columns = columns
+
+    d1 = dataFrame[['airport','airport_name']]
+    d1 = d1.head(100).values
+
+    d2 = dataFrame[['carrier','carrier_name']]
 
     MONTH_CHOICES = (
         ('1', 'January'),
@@ -67,6 +79,10 @@ class MyForm(forms.Form):
     CARRIER_CHOICES = (
         ('AA', 'American Airlines Inc'),
         ('AS', 'Alaska Airlines Inc'),
+        ('B6', 'JetBlue Airways'),
+        ('CO', 'Continental Air Lines Inc.'),
+        ('DH', 'Atlantic Coast Airlines'),
+        ('DL', 'Delta Air Lines Inc.')
     )
 
     AIRPORT_CHOICES = (
@@ -74,10 +90,10 @@ class MyForm(forms.Form):
         ('ANC','Anchorage, AK: Ted Stevens Anchorage International')
     )
 
-    airport = forms.ChoiceField(label='Airport',choices=AIRPORT_CHOICES)
+    airport = forms.ChoiceField(label='Airport',choices=d1)
     carrier = forms.ChoiceField(label='Carrier',choices=CARRIER_CHOICES)
     month = forms.ChoiceField(label='Month',choices=MONTH_CHOICES)
     weather = forms.IntegerField(label='Weather')
 
     class Meta:
-        fields = ('airport', 'month', 'carrier', 'weather')
+        fields = ('airport', 'month', 'carrier','weather')

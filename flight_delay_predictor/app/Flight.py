@@ -75,7 +75,7 @@ def predict(a,m,c,w):
 
     # Create X dataframe
     data = pd.concat([pd.DataFrame(X_1),pd.DataFrame(X_2),pd.DataFrame(X_3),pd.DataFrame(X_4)],axis=1)
-    # print(data.shape)
+    print(data.shape)
 
     # Split in to train and test
     X_train,X_test,Y_train,Y_test = train_test_split(data.iloc[:,:].values,Y,test_size=0.2,random_state=0)
@@ -101,4 +101,4 @@ def predict(a,m,c,w):
 
     # Finally predict
     y_predict = model.predict([X_predict])
-    return y_predict
+    return -y_predict if y_predict < 0 else y_predict
